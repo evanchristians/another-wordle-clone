@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.char {
+  @apply border-opacity-60 bg-opacity-60 grid place-items-center text-3xl;
+  @apply font-bold border-2 transition-all;
+  @apply w-80 max-w-full aspect-square uppercase;
+}
+
+main {
+  @apply min-h-screen flex flex-col items-center justify-center w-full py-10 px-4 bg-slate-900 gap-1;
+}

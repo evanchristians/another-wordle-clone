@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import "./index.css";
 
-import { onMounted, Ref, ref, watchEffect } from "@vue/runtime-core";
-import { Score, Word } from "./types/word.types";
-import { MAX_GUESSES } from "./constants/numbers";
+import {onMounted, Ref, ref, watchEffect} from "@vue/runtime-core";
+import {Score, Word} from "./types/word.types";
+import {MAX_GUESSES} from "./constants/numbers";
 import * as K from "./utils/keyboard";
 import * as W from "./utils/word";
 
 console.log(W.getScore("index".split(""), "drier"));
+
+const complete: Ref<boolean> = ref(false);
 
 const scores: Ref<Score[]> = ref([]);
 const guesses: Ref<Word[]> = ref(new Array(MAX_GUESSES).fill(W.createGuess()));
@@ -16,10 +18,16 @@ const currentGuess: Ref<Word> = ref(guesses.value[currentGuessIndex.value]);
 
 // TODO: Make eloquent
 onMounted(() => {
-  window.addEventListener("keydown", (evt) => {
+  window.addEventListener("keydown", evt => {
+    if (complete.value) return;
+
     if (K.isEnter(evt)) {
       if (W.canSubmit(currentGuess.value)) {
-        currentGuess
+        scores.value = [
+          ...scores.value,
+          W.getScore(currentGuess.value, "drier"),
+        ];
+        currentGuess.value = W.createGuess();
         return currentGuessIndex.value++;
       }
     }
@@ -28,25 +36,35 @@ onMounted(() => {
 });
 
 watchEffect(() => {
+  complete.value = !!scores.value.find(
+    score => score.reduce((acc, curr) => acc + curr) == 10,
+  );
+});
+
+watchEffect(() => {
   guesses.value[currentGuessIndex.value] = currentGuess.value;
 });
 </script>
 
 <template>
-  <main
-    class="min-h-screen flex flex-col items-center justify-center w-full py-10 px-4 bg-slate-900 gap-4"
-  >
+  <main>
     <div
-      class="flex gap-2 max-w-board text-slate-300"
-      v-for="(guess, key) in guesses"
-      :key="key"
+      class="flex gap-1 max-w-board text-slate-300"
+      v-for="(guess, row) in guesses"
+      :key="row"
     >
       <div
-        v-for="(c, i) in guess"
-        :key="i"
-        class="grid place-items-center text-6xl border-4 border-slate-700 w-80 max-w-full aspect-square uppercase"
+        v-for="(char, col) in guess"
+        :key="col"
+        :class="`char ${
+          row == currentGuessIndex && currentGuess[col]
+            ? 'border-slate-600'
+            : scores[row]
+            ? 'border-slate-500'
+            : 'border-slate-700'
+        }  ${scores[row] && W.getScoreColor(scores[row], col)}`"
       >
-        {{ c }}
+        {{ char }}
       </div>
     </div>
   </main>

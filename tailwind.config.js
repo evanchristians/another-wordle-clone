@@ -3,7 +3,7 @@ module.exports = {
   theme: {
     extend: {
       maxWidth: {
-        board: "min(100%, 640px)"
+        board: "min(100%, 360px)"
       }
     },
   },
