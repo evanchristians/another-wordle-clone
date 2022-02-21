@@ -22,11 +22,13 @@ export const getScore = (guess: string, word: string): Score => {
 };
 
 export const createGuess = (): Word => {
-  return new Array(5).map(_ => null);
+  return new Array(5).fill(null);
 };
 
 export const insert = (char: string, word: Word): Word =>
-  word.map((c, i) => (word.findIndex(el => el == null) == i ? char : c));
+  word.map((c, i) => (word.findIndex(el => !el) == i ? char : c));
 
-export const backspace = (word: Word): Word =>
-  word.map((c, i) => (word.findIndex(el => el == null) == i + 1 ? null : c));
+export const pop = (word: Word): Word =>
+  word[word.length - 1] !== null
+    ? [...word.slice(0, word.length - 1), null]
+    : word.map((c, i) => (word.findIndex(el => !el) == i + 1 ? null : c));

@@ -1,7 +1,11 @@
 module.exports = {
-  content: ["./**/*.{vue,html,js,ts}"],
+  content: ["./src/**/*.{vue,html,js,ts}"],
   theme: {
-    extend: {},
+    extend: {
+      maxWidth: {
+        board: "min(100%, 640px)"
+      }
+    },
   },
   plugins: [],
 }
