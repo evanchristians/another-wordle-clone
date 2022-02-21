@@ -1,4 +1,4 @@
-import {Word, Score} from "../../types/word.types";
+import {Word, Score} from "../types/word.types";
 
 /**
  * get score for guess | 1: correct character, 2: correct character and position: 0: invalid guess

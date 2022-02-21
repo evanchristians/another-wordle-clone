@@ -1,6 +1,6 @@
 import {Ref} from "@vue/runtime-core";
 import {BACKSPACE} from "../constants/strings";
-import {Word} from "./../../types/word.types";
+import {Word} from "../types/word.types";
 import * as W from "./word";
 
 export const isAlphabetic = ({key, code}: KeyboardEvent): boolean =>
