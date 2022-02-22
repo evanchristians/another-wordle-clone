@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import "./index.css";
 
-import {onMounted, Ref, ref, watchEffect} from "@vue/runtime-core";
-import {Score, Word} from "./types/word.types";
-import {MAX_GUESSES} from "./constants/numbers";
+import { onMounted, Ref, ref, watchEffect } from "@vue/runtime-core";
+import { Score, Word } from "./types/word.types";
+import answers from "./constants/answers.json";
+import { MAX_GUESSES } from "./constants/numbers";
 import * as K from "./utils/keyboard";
 import * as W from "./utils/word";
 
-console.log(W.getScore("index".split(""), "drier"));
+const answer = W.getRandomWord(answers);
 
 const complete: Ref<boolean> = ref(false);
 
@@ -18,15 +19,12 @@ const currentGuess: Ref<Word> = ref(guesses.value[currentGuessIndex.value]);
 
 // TODO: Make eloquent
 onMounted(() => {
-  window.addEventListener("keydown", evt => {
+  window.addEventListener("keydown", (evt) => {
     if (complete.value) return;
 
     if (K.isEnter(evt)) {
       if (W.canSubmit(currentGuess.value)) {
-        scores.value = [
-          ...scores.value,
-          W.getScore(currentGuess.value, "drier"),
-        ];
+        scores.value = [...scores.value, W.getScore(currentGuess.value, answer)];
         currentGuess.value = W.createGuess();
         return currentGuessIndex.value++;
       }
@@ -37,7 +35,7 @@ onMounted(() => {
 
 watchEffect(() => {
   complete.value = !!scores.value.find(
-    score => score.reduce((acc, curr) => acc + curr) == 10,
+    (score) => score.reduce((acc, curr) => acc + curr) == 10
   );
 });
 

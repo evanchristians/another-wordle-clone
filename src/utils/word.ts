@@ -30,3 +30,6 @@ export const pop = (word: Word): Word =>
 
 export const getScoreColor = (score: Score, position: number): string =>
   score[position] == 2 ? GREEN : score[position] == 1 ? ORANGE : GREY;
+
+export const getRandomWord = (words: string[]): string =>
+  words[Math.floor(Math.random() * words.length)];
