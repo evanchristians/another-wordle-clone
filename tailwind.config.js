@@ -3,9 +3,9 @@ module.exports = {
   theme: {
     extend: {
       maxWidth: {
-        board: "min(100%, 360px)"
-      }
+        board: "min(100%, 360px)",
+      },
     },
   },
   plugins: [],
-}
+};

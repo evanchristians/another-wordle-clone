@@ -58,8 +58,6 @@ watchEffect(() => {
         :key="col"
         :class="`char ${
           row == currentGuessIndex && currentGuess[col]
-            ? 'border-slate-600'
-            : scores[row]
             ? 'border-slate-500'
             : 'border-slate-700'
         }  ${scores[row] && W.getScoreColor(scores[row], col)}`"
